@@ -11,212 +11,146 @@ $data = file_get_contents('php://input');
 $array = json_decode($data, true);
 //debugArray($array);
 
-$fromMe  = $array["key"]["fromMe"];//Mensagem recebida ou enviada (true -> Enviada / false -> Recebida)
-$type    = $array["messageType"];//Tipo de mensagem recebida
+$fromMe  = $array["key"]["fromMe"]; //Mensagem recebida ou enviada (true -> Enviada / false -> Recebida)
+$type    = $array["messageType"]; //Tipo de mensagem recebida
 
 
 /**
  * Validação se é uma mensagem recebida ou enviada
  */
-if( !$fromMe ){
-
-    /**
-     * Retornos mensagens recebidas
-     */
-    switch ($type) {
-        case 'conversation'://Tipo chat
-            /**Pego as informações do array - MSG Texto*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $participant    = $array["key"]["participant"] ?? "";//Participante que enviou a mensagem no grupo
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $status          = $array["status"] ?? "";//Status da mensagem
-            $message        = $array["message"]["conversation"];//Mensagem do chat
+if (!$fromMe) {
 
 
-        break;
+    if ($type != "message.ack") {
 
-        case 'audioMessage'://Tipo chat
-            /**Pego as informações do array - MSG Audio*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente ou id do grupo
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $participant    = $array["key"]["participant"];//Participante que enviou a mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $urlFile        = $array["message"]["audioMessage"]["url"];//URL do arquivo
-            $mimetypeFile   = $array["message"]["audioMessage"]["mimetype"];//mimetype do arquivo
-            $secondsFile    = $array["message"]["audioMessage"]["seconds"];//segundos do arquivo
-            $pttFile        = $array["message"]["audioMessage"]["ptt"];//se o audio foi gravado
-            $mediaKeyFile   = $array["message"]["audioMessage"]["mediaKey"];//key do arquivo
-            $directPathFile = $array["message"]["audioMessage"]["directPath"];//path do arquivo
+        /**Pego as informações do array - MSG Texto*/
+        $instance       = $array["instance_key"]; //Instancia
+        $phoneConect    = $array["jid"]; //Telefone conectado na api
+        $chatid         = $array["key"]["remoteJid"]; //Contato cliente
+        $idMessage      = $array["key"]["id"]; //ID da mensagem
+        $participant    = $array["key"]["participant"] ?? ""; //Participante que enviou a mensagem no grupo
+        $time           = $array["messageTimestamp"]; //Hora e data que foi enviada
+        $name           = $array["pushName"]; //Nome do contato
+        $status          = $array["status"] ?? ""; //Status da mensagem
+        $message        = $array["message"]["conversation"]; //Mensagem do chat
 
-        break;
+        /**Pego as informações do array - MSG Audio*/
+        //  $message        = $array["message"]["conversation"];//Mensagem do chat
+        //  $urlFile        = $array["message"]["audioMessage"]["url"];//URL do arquivo
+        //  $mimetypeFile   = $array["message"]["audioMessage"]["mimetype"];//mimetype do arquivo
+        //  $secondsFile    = $array["message"]["audioMessage"]["seconds"];//segundos do arquivo
+        //  $pttFile        = $array["message"]["audioMessage"]["ptt"];//se o audio foi gravado
+        //  $mediaKeyFile   = $array["message"]["audioMessage"]["mediaKey"];//key do arquivo
+        //  $directPathFile = $array["message"]["audioMessage"]["directPath"];//path do arquivo
 
-        case 'videoMessage'://Tipo chat
-            /**Pego as informações do array - MSG Video*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $participant    = $array["key"]["participant"];//Participante que enviou a mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $message        = $array["message"]["videoMessage"]["caption"];//Legenda do video
-            $urlFile        = $array["message"]["videoMessage"]["url"];//URL do arquivo
-            $mimetypeFile   = $array["message"]["videoMessage"]["mimetype"];//mimetype do arquivo
-            $secondsFile    = $array["message"]["videoMessage"]["seconds"];//segundos do arquivo
-            $mediaKeyFile   = $array["message"]["videoMessage"]["mediaKey"];//key do arquivo
-            $directPathFile = $array["message"]["videoMessage"]["directPath"];//path do arquivo
-            $thumbnailFile  = $array["message"]["videoMessage"]["jpegThumbnail"];//thumbnail do video
 
-        break;
+        /**Pego as informações do array - MSG video */
+        // $message        = $array["message"]["videoMessage"]["caption"];//Legenda do video
+        // $urlFile        = $array["message"]["videoMessage"]["url"];//URL do arquivo
+        // $mimetypeFile   = $array["message"]["videoMessage"]["mimetype"];//mimetype do arquivo
+        // $secondsFile    = $array["message"]["videoMessage"]["seconds"];//segundos do arquivo
+        // $mediaKeyFile   = $array["message"]["videoMessage"]["mediaKey"];//key do arquivo
+        // $directPathFile = $array["message"]["videoMessage"]["directPath"];//path do arquivo
+        // $thumbnailFile  = $array["message"]["videoMessage"]["jpegThumbnail"];//thumbnail do video
 
-        case 'imageMessage'://Tipo chat
-            /**Pego as informações do array - MSG Imagem*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $participant    = $array["key"]["participant"];//Participante que enviou a mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $message        = $array["message"]["imageMessage"]["caption"];//Legenda da imagem
-            $urlFile        = $array["message"]["imageMessage"]["url"];//URL do arquivo
-            $mimetypeFile   = $array["message"]["imageMessage"]["mimetype"];//mimetype do arquivo
-            $mediaKeyFile   = $array["message"]["imageMessage"]["mediaKey"];//key do arquivo
-            $directPathFile = $array["message"]["imageMessage"]["directPath"];//path do arquivo
-            $thumbnailFile  = $array["message"]["imageMessage"]["jpegThumbnail"];//thumbnail da imagem
 
-        break;
+        /**Pego as informações do array - MSG imagem */
+        // $message        = $array["message"]["imageMessage"]["caption"];//Legenda da imagem
+        // $urlFile        = $array["message"]["imageMessage"]["url"];//URL do arquivo
+        // $mimetypeFile   = $array["message"]["imageMessage"]["mimetype"];//mimetype do arquivo
+        // $mediaKeyFile   = $array["message"]["imageMessage"]["mediaKey"];//key do arquivo
+        // $directPathFile = $array["message"]["imageMessage"]["directPath"];//path do arquivo
+        // $thumbnailFile  = $array["message"]["imageMessage"]["jpegThumbnail"];//thumbnail da imagem
 
-        case 'stickerMessage'://Tipo chat
-            /**Pego as informações do array - MSG sticker*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $message        = $array["message"]["conversation"];//Legenda
-            $urlFile        = $array["message"]["stickerMessage"]["url"];//URL do arquivo
-            $mimetypeFile   = $array["message"]["stickerMessage"]["mimetype"];//mimetype do arquivo
-            $mediaKeyFile   = $array["message"]["stickerMessage"]["mediaKey"];//key do arquivo
-            $directPathFile = $array["message"]["stickerMessage"]["directPath"];//path do arquivo
 
-        break;
+        /**Pego as informações do array - MSG sticker */
+        // $urlFile        = $array["message"]["stickerMessage"]["url"]; //URL do arquivo
+        // $mimetypeFile   = $array["message"]["stickerMessage"]["mimetype"]; //mimetype do arquivo
+        // $mediaKeyFile   = $array["message"]["stickerMessage"]["mediaKey"]; //key do arquivo
+        // $directPathFile = $array["message"]["stickerMessage"]["directPath"]; //path do arquivo
 
-        case 'documentMessage'://Tipo chat
-            /**Pego as informações do array - MSG documento*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $urlFile        = $array["message"]["documentMessage"]["url"];//URL do arquivo
-            $mimetypeFile   = $array["message"]["documentMessage"]["mimetype"];//mimetype do arquivo
-            $titleFile      = $array["message"]["documentMessage"]["title"];//tiutlo do documento
-            $pageFile       = $array["message"]["documentMessage"]["pageCount"];//QTD de paginas
-            $mediaKeyFile   = $array["message"]["documentMessage"]["mediaKey"];//key do arquivo
-            $nameFile       = $array["message"]["documentMessage"]["fileName"];//nome do documento
-            $directPathFile = $array["message"]["documentMessage"]["directPath"];//path do arquivo
-            $thumbnailFile  = $array["message"]["documentMessage"]["jpegThumbnail"];//thumbnail do documento
 
-        break;
+        /**Pego as informações do array - MSG documento */
+        // $urlFile        = $array["message"]["documentMessage"]["url"]; //URL do arquivo
+        // $mimetypeFile   = $array["message"]["documentMessage"]["mimetype"]; //mimetype do arquivo
+        // $titleFile      = $array["message"]["documentMessage"]["title"]; //tiutlo do documento
+        // $pageFile       = $array["message"]["documentMessage"]["pageCount"]; //QTD de paginas
+        // $mediaKeyFile   = $array["message"]["documentMessage"]["mediaKey"]; //key do arquivo
+        // $nameFile       = $array["message"]["documentMessage"]["fileName"]; //nome do documento
+        // $directPathFile = $array["message"]["documentMessage"]["directPath"]; //path do arquivo
+        // $thumbnailFile  = $array["message"]["documentMessage"]["jpegThumbnail"]; //thumbnail do documento
 
-        case 'extendedTextMessage'://Tipo chat
-            /**Pego as informações do array - MSG catalogo de produtos*/
-            $instance               = $array["instance_key"];//Instancia
-            $phoneConect            = $array["jid"];//Telefone conectado na api
-            $chatid                 = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage              = $array["key"]["id"];//ID da mensagem
-            $time                   = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name                   = $array["pushName"];//Nome do contato
-            $textCatalog            = $array["message"]["extendedTextMessage"]["text"];//texto do catalogo
-            $matchedTextCatalog     = $array["message"]["extendedTextMessage"]["matchedText"];//link do catalogo
-            $descriptionCatalog     = $array["message"]["extendedTextMessage"]["description"];//descrição
-            $titleCatalog           = $array["message"]["extendedTextMessage"]["title"];//Titulo do catalogo
-            $thumbnailCatalog       = $array["message"]["extendedTextMessage"]["jpegThumbnail"];//thumbnail do catalogo
 
-        break;
+        /**Pego as informações do array - MSG catalogo de produtos */
+        // $textCatalog            = $array["message"]["extendedTextMessage"]["text"]; //texto do catalogo
+        // $matchedTextCatalog     = $array["message"]["extendedTextMessage"]["matchedText"]; //link do catalogo
+        // $descriptionCatalog     = $array["message"]["extendedTextMessage"]["description"]; //descrição
+        // $titleCatalog           = $array["message"]["extendedTextMessage"]["title"]; //Titulo do catalogo
+        // $thumbnailCatalog       = $array["message"]["extendedTextMessage"]["jpegThumbnail"]; //thumbnail do catalogo
 
-        case 'locationMessage'://Tipo chat
-            /**Pego as informações do array - MSG localização*/
-            $instance               = $array["instance_key"];//Instancia
-            $phoneConect            = $array["jid"];//Telefone conectado na api
-            $chatid                 = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage              = $array["key"]["id"];//ID da mensagem
-            $time                   = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name                   = $array["pushName"];//Nome do contato
-            $latitude               = $array["message"]["locationMessage"]["degreesLatitude"];//latitude
-            $longitude              = $array["message"]["locationMessage"]["degreesLongitude"];//longitude
-            $thumbnail              = $array["message"]["locationMessage"]["jpegThumbnail"];//thumbnail da localização
 
-        break;
+        /**Pego as informações do array - MSG localização */
+        // $latitude               = $array["message"]["locationMessage"]["degreesLatitude"]; //latitude
+        // $longitude              = $array["message"]["locationMessage"]["degreesLongitude"]; //longitude
+        // $thumbnail              = $array["message"]["locationMessage"]["jpegThumbnail"]; //thumbnail da localização
 
-        case 'contactMessage'://Tipo chat
-            /**Pego as informações do array - MSG contato*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $displayName    = $array["message"]["contactMessage"]["displayName"];//Mome do contato
-            $vcard          = $array["message"]["contactMessage"]["vcard"];//crd do contato
 
-        break;
+        /**Pego as informações do array - MSG contato */
+        // $displayName    = $array["message"]["contactMessage"]["displayName"]; //Mome do contato
+        // $vcard          = $array["message"]["contactMessage"]["vcard"]; //crd do contato
 
-        case 'messageContextInfo'://Tipo chat
-            /**Pego as informações do array - MSG botoes*/
-            $instance       = $array["instance_key"];//Instancia
-            $phoneConect    = $array["jid"];//Telefone conectado na api
-            $chatid         = $array["key"]["remoteJid"];//Contato cliente
-            $idMessage      = $array["key"]["id"];//ID da mensagem
-            $time           = $array["messageTimestamp"];//Hora e data que foi enviada
-            $name           = $array["pushName"];//Nome do contato
-            $idBtn          = $array["message"]["buttonsResponseMessage"]["selectedButtonId"];//ID dos botoes
-            $textBtn        = $array["message"]["buttonsResponseMessage"]["selectedDisplayText"];//Texto dos Botoes
-            $titleList      = $array["message"]["listResponseMessage"]["tile"];//Titulo da lista
-            $idList         = $array["message"]["listResponseMessage"]["singleSelectReply"]["selectedRowId"];//Id da lista
 
-        break;
+        /**Verificamos se o cliente digitou oi, se caso tenha enviado oi, vamos enviar uma mensagem de saudação */
+        if ($message == 'oi') {
 
-        case 'connection_update'://Tipo chat
-            /**Pego as informações do array - Sincronização do whatsapp*/
-            $instance       = $array["instance_key"];//Instancia
-            $state          = $array["connection_state"];//status da conexão
-            $time           = $array["timestamp"];//Hora e data da sincronizacão
-            $description    = $array["closeReason"];//descrição
-        break;
+            $curl = curl_init();
 
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://{HOST}/rest/sendMessage/{INSTANCE_KEY}/text',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => '{
+                    "messageData": {
+                        "to": "'.$chatid .'",
+                        "text": "Mensagem de Texto"
+                    }
+                }',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json',
+                    'Authorization: Bearer {TOKEN}'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            echo $response;
+
+        }else{
+
+            //Executa outra ação
+        }
 
     }
-
-    exit;
-
-}else{
+} else {
 
     /**
      * Retornos dos status das mensagens enviadas
      */
-    switch ($type) {
+    if ($type == 'message.ack') {
 
-        case 'message.ack':
-             /**Pego as informações do array - Status de vizualização da mensagem*/
-             $instance      = $array["instance_key"];//Instancia
-             $chatid        = $array["key"]["remoteJid"];//Contato cliente
-             $idMessage     = $array["key"]["id"];//ID da mensagem
-             $status        = replaceAck($array["update"]["status"]);
-            break;
-        
+
+        /**Pego as informações do array - Status de vizualização da mensagem*/
+        $instance      = $array["instance_key"]; //Instancia
+        $chatid        = $array["key"]["remoteJid"]; //Contato cliente
+        $idMessage     = $array["key"]["id"]; //ID da mensagem
+        $status        = replaceAck($array["update"]["status"]);
     }
-
 }
 
 
@@ -225,7 +159,8 @@ if( !$fromMe ){
  *
  * @param [array] $array
  */
-function debugArray($array){
+function debugArray($array)
+{
 
     echo "<pre>";
     print_r($array);
@@ -237,7 +172,8 @@ function debugArray($array){
  * @param [string] $status
  * @return string $status
  */
-function replaceAck($status){
+function replaceAck($status)
+{
 
     /**
      * Fazemos o tratamento do status
@@ -257,7 +193,5 @@ function replaceAck($status){
             $status = "Viewd";
             return $status;
             break;
-        
     }
-
 }
