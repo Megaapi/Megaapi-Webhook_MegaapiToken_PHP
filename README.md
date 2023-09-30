@@ -4,6 +4,7 @@ Webhook PHP para projetos com a api Megaapi Token Multi Device (Nova Versão)
 Retornor Webhook
 
 # Mensagens recebidas tipo texto (messageType: conversation - extendedTextMessage)
+```JSON
 {
   "instance_key": "megaapi-sdkfjsdijfhftrgsdfk",
   "jid": "556181278471@s.whatsapp.net",
@@ -57,6 +58,7 @@ Retornor Webhook
   },
   "verifiedBizName": "Megaapi"
 }
+```
 
 # 📄Mensagens recebidas tipo audio (messageType: audioMessage)
 {
