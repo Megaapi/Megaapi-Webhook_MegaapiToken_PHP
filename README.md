@@ -3,7 +3,7 @@ Webhook PHP para projetos com a api Megaapi Token Multi Device (Nova Versão)
 
 Retornor Webhook
 
-# Mensagens recebidas tipo texto (messageType: conversation - extendedTextMessage)
+# 📄 Mensagens recebidas tipo texto (messageType: conversation - extendedTextMessage)
 ```JSON
 {
   "instance_key": "megaapi-sdkfjsdijfhftrgsdfk",
@@ -197,6 +197,7 @@ Retornor Webhook
 ````
 
 # 📄Mensagens recebidas tipo documento (messageType: documentMessage)
+```JSON
 {
   "instance_key": "megaapi-sdfjrkerurgtrtgrtfg",
   "jid": "556181278471@s.whatsapp.net",
@@ -240,8 +241,10 @@ Retornor Webhook
   },
   "verifiedBizName": "Megaapi"
 }
+````
 
 # 📄Mensagens recebidas tipo localização (messageType: locationMessage)
+```JSON
 {
   "instance_key": "megaapi-rdtdgffbcmbfjgnbjfkbgfg",
   "jid": "556181278471@s.whatsapp.net",
@@ -271,9 +274,10 @@ Retornor Webhook
   },
   "verifiedBizName": "Megaapi"
 }
+````
 
 # 📄Mensagens recebidas tipo contato (messageType: contactMessage)
-
+```JSON
 {
   "instance_key": "megaapi-dgfyjuikhujsdrgfthjvum",
   "jid": "556181278471@s.whatsapp.net",
@@ -303,8 +307,10 @@ Retornor Webhook
   },
   "verifiedBizName": "Megaapi"
 }
+````
 
 # 📄Mensagens recebidas tipo sticker (messageType: stickerMessage)
+```JSON
 {
   "instance_key": "megaapi-sdfsjkrtgopsdjfkjhdfdfg",
   "jid": "556181278471@s.whatsapp.net",
@@ -345,6 +351,7 @@ Retornor Webhook
   },
   "verifiedBizName": "Megaapi"
 }
+````
 
 # 📄Mensagens recebidas enquete, pedidos, catalogos ...(messageType: messageContextInfo)
 
@@ -353,7 +360,7 @@ Esses outros tipos adicionados recentes no whatsapp, recomendamos testar utiliza
 https://webhook.site/
 
 para que você possa detalhar melhor os retornos do whatsapp.
-
+```JSON
 {
   "instance_key": "megaapi-ksdhfjsdfsdfsdf",
   "jid": "556181278471@s.whatsapp.net",
@@ -410,5 +417,5 @@ para que você possa detalhar melhor os retornos do whatsapp.
   },
   "verifiedBizName": "Megaapi"
 }
-
+````
 
